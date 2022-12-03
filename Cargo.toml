@@ -1,0 +1,6 @@
+[workspace]
+members = ["common", "cli", "day*"]
+
+[workspace.dependencies]
+fixedbitset = "0.4"
+itertools = "0.10"
