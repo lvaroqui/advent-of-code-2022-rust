@@ -7,5 +7,4 @@ edition = "2021"
 
 [dependencies]
 common.path = "../common"
-fixedbitset.workspace = true
 itertools.workspace = true
