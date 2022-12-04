@@ -58,6 +58,7 @@ dependencies = [
  "comfy-table",
  "common",
  "day03",
+ "day04",
  "reqwest",
 ]
 
@@ -120,6 +121,14 @@ dependencies = [
 
 [[package]]
 name = "day03"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+]
+
+[[package]]
+name = "day04"
 version = "0.1.0"
 dependencies = [
  "common",

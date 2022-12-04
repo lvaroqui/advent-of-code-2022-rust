@@ -19,6 +19,7 @@ fn main() -> anyhow::Result<()> {
 
     let solver: &dyn DaySolver = match day {
         3 => &day03::Day3,
+        4 => &day04::Day4,
         _ => anyhow::bail!("Day {} not implemented!", day),
     };
 
