@@ -8,7 +8,7 @@ use std::{
 
 use anyhow::Context;
 use comfy_table::{modifiers::UTF8_ROUND_CORNERS, presets::UTF8_FULL, Table};
-use common::DaySolver;
+use common::{DaySolver, DualDaySolver};
 use reqwest::blocking::Client;
 
 fn main() -> anyhow::Result<()> {
@@ -17,9 +17,9 @@ fn main() -> anyhow::Result<()> {
         .with_context(|| "Please provide a day number")?
         .parse()?;
 
-    let solver: &dyn DaySolver = match day {
-        3 => &day03::Day3,
-        4 => &day04::Day4,
+    let solver: DaySolver = match day {
+        3 => day03::Day3.to_day_solver(),
+        4 => day04::Day4.to_day_solver(),
         _ => anyhow::bail!("Day {} not implemented!", day),
     };
 
@@ -45,16 +45,18 @@ fn main() -> anyhow::Result<()> {
     }
 
     let input = std::fs::read_to_string(path)?;
-    let input = input.trim();
+    let input = input.trim_end();
 
-    let (result, first_stats) = instrument(|| solver.solve_1(input));
-    let first = result.first();
-
-    let (second, second_stats) = if let Some(second) = result.second() {
-        (second, None)
-    } else {
-        let (r, s) = instrument(|| solver.solve_2(input));
-        (r, Some(s))
+    let (first, first_stats, second, second_stats) = match solver {
+        DaySolver::Mono(s) => {
+            let ((first, second), stats) = instrument(|| s.solve(input));
+            (first, stats, second, None)
+        }
+        DaySolver::Dual(s) => {
+            let (first, first_stats) = instrument(|| s.solve_1(input));
+            let (second, second_stats) = instrument(|| s.solve_2(input));
+            (first, first_stats, second, Some(second_stats))
+        }
     };
 
     let mut table = Table::new();

@@ -3,26 +3,29 @@ use itertools::Itertools;
 
 pub struct Day3;
 
-impl common::DaySolver for Day3 {
+impl common::DualDaySolver for Day3 {
     fn solve_1(&self, input: &str) -> DayResult {
-        input
+        let res = input
             .split('\n')
             .map(|l| {
                 let (a, b) = l.split_at(l.len() / 2);
                 let (a, b) = (to_bitset(a), to_bitset(b));
                 Ones::new(a & b).next().unwrap()
             })
-            .sum::<u64>()
-            .into()
+            .sum::<u64>();
+
+        DayResult::new(res)
     }
 
-    fn solve_2(&self, input: &str) -> u64 {
-        input
+    fn solve_2(&self, input: &str) -> DayResult {
+        let res = input
             .split('\n')
             .map(to_bitset)
             .tuples()
             .map(|(a, ref b, ref c)| Ones::new(a & b & c).next().unwrap())
-            .sum()
+            .sum::<u64>();
+
+        DayResult::new(res)
     }
 }
 

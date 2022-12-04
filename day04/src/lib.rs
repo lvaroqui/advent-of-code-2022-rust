@@ -4,26 +4,29 @@ use common::DayResult;
 
 pub struct Day4;
 
-impl common::DaySolver for Day4 {
+impl common::DualDaySolver for Day4 {
     fn solve_1(&self, input: &str) -> DayResult {
-        get_ranges(input)
+        let res = get_ranges(input)
             .filter(|(a, b)| {
                 (a.contains(b.start()) && a.contains(b.end()))
                     || (b.contains(a.start()) && b.contains(a.end()))
             })
-            .count()
-            .into()
+            .count();
+
+        DayResult::new(res)
     }
 
-    fn solve_2(&self, input: &str) -> u64 {
-        get_ranges(input)
+    fn solve_2(&self, input: &str) -> DayResult {
+        let res = get_ranges(input)
             .filter(|(a, b)| {
                 a.contains(b.start())
                     || a.contains(b.end())
                     || b.contains(a.start())
                     || b.contains(a.end())
             })
-            .count() as u64
+            .count();
+
+        DayResult::new(res)
     }
 }
 
