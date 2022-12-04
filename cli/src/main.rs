@@ -18,8 +18,30 @@ fn main() -> anyhow::Result<()> {
         .parse()?;
 
     let solver: DaySolver = match day {
-        3 => day03::Day3.to_day_solver(),
-        4 => day04::Day4.to_day_solver(),
+        1 => day01::Solver.to_day_solver(),
+        2 => day02::Solver.to_day_solver(),
+        3 => day03::Solver.to_day_solver(),
+        4 => day04::Solver.to_day_solver(),
+        5 => day05::Solver.to_day_solver(),
+        6 => day06::Solver.to_day_solver(),
+        7 => day07::Solver.to_day_solver(),
+        8 => day08::Solver.to_day_solver(),
+        9 => day09::Solver.to_day_solver(),
+        10 => day10::Solver.to_day_solver(),
+        11 => day11::Solver.to_day_solver(),
+        12 => day12::Solver.to_day_solver(),
+        13 => day13::Solver.to_day_solver(),
+        14 => day14::Solver.to_day_solver(),
+        15 => day15::Solver.to_day_solver(),
+        16 => day16::Solver.to_day_solver(),
+        17 => day17::Solver.to_day_solver(),
+        18 => day18::Solver.to_day_solver(),
+        19 => day19::Solver.to_day_solver(),
+        20 => day20::Solver.to_day_solver(),
+        21 => day21::Solver.to_day_solver(),
+        22 => day22::Solver.to_day_solver(),
+        23 => day23::Solver.to_day_solver(),
+        24 => day24::Solver.to_day_solver(),
         _ => anyhow::bail!("Day {} not implemented!", day),
     };
 

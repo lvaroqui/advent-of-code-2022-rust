@@ -1,9 +1,9 @@
 use common::DayResult;
 use itertools::Itertools;
 
-pub struct Day3;
+pub struct Solver;
 
-impl common::DualDaySolver for Day3 {
+impl common::DualDaySolver for Solver {
     fn solve_1(&self, input: &str) -> DayResult {
         let res = input
             .split('\n')

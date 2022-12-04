@@ -21,6 +21,7 @@ impl DayResult {
 pub trait DualDaySolver {
     #[allow(unused_variables)]
     fn solve_1(&self, input: &str) -> DayResult {
+        let _ = input;
         DayResult::default()
     }
 

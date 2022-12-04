@@ -2,9 +2,9 @@ use std::ops::RangeInclusive;
 
 use common::DayResult;
 
-pub struct Day4;
+pub struct Solver;
 
-impl common::DualDaySolver for Day4 {
+impl common::DualDaySolver for Solver {
     fn solve_1(&self, input: &str) -> DayResult {
         let res = get_ranges(input)
             .filter(|(a, b)| {

@@ -57,8 +57,30 @@ dependencies = [
  "anyhow",
  "comfy-table",
  "common",
+ "day01",
+ "day02",
  "day03",
  "day04",
+ "day05",
+ "day06",
+ "day07",
+ "day08",
+ "day09",
+ "day10",
+ "day11",
+ "day12",
+ "day13",
+ "day14",
+ "day15",
+ "day16",
+ "day17",
+ "day18",
+ "day19",
+ "day20",
+ "day21",
+ "day22",
+ "day23",
+ "day24",
  "reqwest",
 ]
 
@@ -120,6 +142,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "day01"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+]
+
+[[package]]
+name = "day02"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+]
+
+[[package]]
 name = "day03"
 version = "0.1.0"
 dependencies = [
@@ -132,6 +170,166 @@ name = "day04"
 version = "0.1.0"
 dependencies = [
  "common",
+]
+
+[[package]]
+name = "day05"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+]
+
+[[package]]
+name = "day06"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+]
+
+[[package]]
+name = "day07"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+]
+
+[[package]]
+name = "day08"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+]
+
+[[package]]
+name = "day09"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+]
+
+[[package]]
+name = "day10"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+]
+
+[[package]]
+name = "day11"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+]
+
+[[package]]
+name = "day12"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+]
+
+[[package]]
+name = "day13"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+]
+
+[[package]]
+name = "day14"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+]
+
+[[package]]
+name = "day15"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+]
+
+[[package]]
+name = "day16"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+]
+
+[[package]]
+name = "day17"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+]
+
+[[package]]
+name = "day18"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+]
+
+[[package]]
+name = "day19"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+]
+
+[[package]]
+name = "day20"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+]
+
+[[package]]
+name = "day21"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+]
+
+[[package]]
+name = "day22"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+]
+
+[[package]]
+name = "day23"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+]
+
+[[package]]
+name = "day24"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
 ]
 
 [[package]]
