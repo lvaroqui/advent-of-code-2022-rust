@@ -46,8 +46,7 @@ fn solve(input: &str, stack_func: impl Fn(&mut Vec<Vec<char>>, usize, usize, usi
                 stacks[i].push(c);
             }
             i += 1;
-            it.next();
-            it.next();
+            it.nth(1);
         }
     }
 
