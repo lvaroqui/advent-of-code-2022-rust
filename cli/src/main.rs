@@ -8,7 +8,7 @@ use std::{
 
 use anyhow::Context;
 use comfy_table::{modifiers::UTF8_ROUND_CORNERS, presets::UTF8_FULL, Table};
-use common::{DaySolver, DualDaySolver};
+use common::{DaySolver, DualDaySolver, MonoDaySolver};
 use reqwest::blocking::Client;
 
 fn main() -> anyhow::Result<()> {

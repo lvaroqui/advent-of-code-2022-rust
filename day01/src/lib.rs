@@ -1,10 +1,17 @@
 use common::DayResult;
+use itertools::Itertools;
 
 pub struct Solver;
 
-impl common::DualDaySolver for Solver {
-    fn solve_1(&self, input: &str) -> DayResult {
-        let _ = input;
-        DayResult::default()
+impl common::MonoDaySolver for Solver {
+    fn solve(&self, input: &str) -> (DayResult, DayResult) {
+        let iter = input
+            .split("\n\n")
+            .map(|s| s.lines().map(|l| l.parse::<u32>().unwrap()).sum::<u32>());
+
+        (
+            DayResult::new(iter.clone().max().unwrap()),
+            DayResult::new(iter.sorted_unstable().rev().take(3).sum::<u32>()),
+        )
     }
 }
