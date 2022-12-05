@@ -5,10 +5,10 @@ pub struct Solver;
 impl common::DualDaySolver for Solver {
     fn solve_1(&self, input: &str) -> DayResult {
         solve(input, |stacks, from, to, amount| {
-            for _ in 0..amount {
-                let c = stacks[from].pop().unwrap();
-                stacks[to].push(c);
-            }
+            let i = stacks[from].len();
+            let mut tmp = stacks[from].split_off(i - amount);
+            tmp.reverse();
+            stacks[to].extend_from_slice(&tmp);
         })
     }
 
@@ -51,7 +51,7 @@ fn solve(input: &str, stack_func: impl Fn(&mut Vec<Vec<char>>, usize, usize, usi
     }
 
     for (amount, from, to) in moves.split('\n').map(|l| {
-        let mut it = l.split_whitespace();
+        let mut it = l.split(' ');
         (
             it.nth(1).unwrap().parse::<usize>().unwrap(),
             it.nth(1).unwrap().parse::<usize>().unwrap() - 1,
