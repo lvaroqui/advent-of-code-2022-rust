@@ -21,7 +21,7 @@ impl common::DualDaySolver for Solver {
     }
 }
 
-fn solve(input: &str, stack_func: impl Fn(&mut Vec<Vec<char>>, usize, usize, usize)) -> DayResult {
+fn solve(input: &str, stack_func: impl Fn(&mut Vec<Vec<u8>>, usize, usize, usize)) -> DayResult {
     let (layout, moves) = {
         let mut it = input.split("\n\n");
         (it.next().unwrap(), it.next().unwrap())
@@ -39,10 +39,10 @@ fn solve(input: &str, stack_func: impl Fn(&mut Vec<Vec<char>>, usize, usize, usi
     let mut stacks = vec![vec![]; stack_count];
 
     for &l in layout.iter().rev().skip(1) {
-        let mut it = l.chars();
+        let mut it = l.as_bytes().iter();
         let mut i = 0;
-        while let Some(c) = it.nth(1) {
-            if c != ' ' {
+        while let Some(&c) = it.nth(1) {
+            if c != b' ' {
                 stacks[i].push(c);
             }
             i += 1;
@@ -50,17 +50,24 @@ fn solve(input: &str, stack_func: impl Fn(&mut Vec<Vec<char>>, usize, usize, usi
         }
     }
 
-    for (amount, from, to) in moves.split('\n').map(|l| {
-        let mut it = l.split(' ');
-        (
-            it.nth(1).unwrap().parse::<usize>().unwrap(),
-            it.nth(1).unwrap().parse::<usize>().unwrap() - 1,
-            it.nth(1).unwrap().parse::<usize>().unwrap() - 1,
-        )
-    }) {
+    for (i, (amount, from, to)) in moves
+        .split('\n')
+        .map(|l| {
+            let mut it = l.split(' ');
+            (
+                it.nth(1).unwrap().parse::<usize>().unwrap(),
+                it.nth(1).unwrap().parse::<usize>().unwrap() - 1,
+                it.nth(1).unwrap().parse::<usize>().unwrap() - 1,
+            )
+        })
+        .enumerate()
+    {
+        if i % 10000 == 0 {
+            println!("{}", i);
+        }
         stack_func(&mut stacks, from, to, amount);
     }
 
-    let res: String = stacks.iter().map(|s| s.last().unwrap()).collect();
+    let res: String = stacks.iter().map(|s| *s.last().unwrap() as char).collect();
     DayResult::new(res)
 }
