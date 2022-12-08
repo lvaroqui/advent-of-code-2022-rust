@@ -1,10 +1,54 @@
 use common::DayResult;
+use take_until::TakeUntilExt;
 
 pub struct Solver;
 
-impl common::DualDaySolver for Solver {
-    fn solve_1(&self, input: &str) -> DayResult {
-        let _ = input;
-        DayResult::default()
+type Map = Vec<Vec<u32>>;
+
+impl common::MonoDaySolver for Solver {
+    fn solve(&self, input: &str) -> (DayResult, DayResult) {
+        let map: Map = input
+            .split('\n')
+            .map(|l| l.chars().map(|c| c.to_digit(10).unwrap()).collect())
+            .collect();
+
+        let visible_trees = tree_iter(&map)
+            .filter(|(current, (x, y))| {
+                line_col_iter(&map, (*x, *y)).any(|mut line| line.all(|h| h < *current))
+            })
+            .count();
+
+        let max_scenic_score = tree_iter(&map)
+            .map(|(current, (x, y))| {
+                line_col_iter(&map, (x, y))
+                    .map(|line| line.take_until(|h| *h >= current).count())
+                    .product::<usize>()
+            })
+            .max()
+            .unwrap();
+
+        (
+            DayResult::new(visible_trees),
+            DayResult::new(max_scenic_score),
+        )
     }
+}
+
+fn tree_iter(map: &Map) -> impl Iterator<Item = (u32, (usize, usize))> + '_ {
+    map.iter()
+        .enumerate()
+        .flat_map(|(y, l)| l.iter().enumerate().map(move |(x, v)| (*v, (x, y))))
+}
+
+fn line_col_iter<'a>(
+    map: &'a Map,
+    (x, y): (usize, usize),
+) -> impl Iterator<Item = impl Iterator<Item = u32> + 'a> {
+    let up = Box::new((0..y).rev().map(move |i| map[i][x]));
+    let down = Box::new((y + 1..map.len()).map(move |i| map[i][x]));
+    let left = Box::new((0..x).rev().map(move |i| map[y][i]));
+    let right = Box::new((x + 1..map[0].len()).map(move |i| map[y][i]));
+
+    let a: [Box<dyn Iterator<Item = u32> + 'a>; 4] = [up, down, left, right];
+    a.into_iter()
 }

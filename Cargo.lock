@@ -202,6 +202,7 @@ version = "0.1.0"
 dependencies = [
  "common",
  "itertools",
+ "take-until",
 ]
 
 [[package]]
@@ -1022,6 +1023,12 @@ dependencies = [
  "quote",
  "unicode-ident",
 ]
+
+[[package]]
+name = "take-until"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b4e17d8598067a8c134af59cd33c1c263470e089924a11ab61cf61690919fe3b"
 
 [[package]]
 name = "tempfile"
