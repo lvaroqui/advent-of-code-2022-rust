@@ -1,4 +1,5 @@
 use common::DayResult;
+use rayon::prelude::*;
 use take_until::TakeUntilExt;
 
 pub struct Solver;
@@ -34,10 +35,10 @@ impl common::MonoDaySolver for Solver {
     }
 }
 
-fn tree_iter(map: &Map) -> impl Iterator<Item = (u32, (usize, usize))> + '_ {
-    map.iter()
+fn tree_iter(map: &Map) -> impl ParallelIterator<Item = (u32, (usize, usize))> + '_ {
+    map.par_iter()
         .enumerate()
-        .flat_map(|(y, l)| l.iter().enumerate().map(move |(x, v)| (*v, (x, y))))
+        .flat_map(|(y, l)| l.par_iter().enumerate().map(move |(x, v)| (*v, (x, y))))
 }
 
 fn line_col_iter<'a>(
@@ -49,6 +50,6 @@ fn line_col_iter<'a>(
     let left = Box::new((0..x).rev().map(move |i| map[y][i]));
     let right = Box::new((x + 1..map[0].len()).map(move |i| map[y][i]));
 
-    let a: [Box<dyn Iterator<Item = u32> + 'a>; 4] = [up, down, left, right];
+    let a: [Box<dyn Iterator<Item = u32> + Send + 'a>; 4] = [up, down, left, right];
     a.into_iter()
 }
