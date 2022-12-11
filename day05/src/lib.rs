@@ -50,21 +50,14 @@ fn solve(input: &str, stack_func: impl Fn(&mut Vec<Vec<u8>>, usize, usize, usize
         }
     }
 
-    for (i, (amount, from, to)) in moves
-        .split('\n')
-        .map(|l| {
-            let mut it = l.split(' ');
-            (
-                it.nth(1).unwrap().parse::<usize>().unwrap(),
-                it.nth(1).unwrap().parse::<usize>().unwrap() - 1,
-                it.nth(1).unwrap().parse::<usize>().unwrap() - 1,
-            )
-        })
-        .enumerate()
-    {
-        if i % 10000 == 0 {
-            println!("{}", i);
-        }
+    for (amount, from, to) in moves.split('\n').map(|l| {
+        let mut it = l.split(' ');
+        (
+            it.nth(1).unwrap().parse::<usize>().unwrap(),
+            it.nth(1).unwrap().parse::<usize>().unwrap() - 1,
+            it.nth(1).unwrap().parse::<usize>().unwrap() - 1,
+        )
+    }) {
         stack_func(&mut stacks, from, to, amount);
     }
 

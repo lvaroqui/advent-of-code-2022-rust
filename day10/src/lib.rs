@@ -49,6 +49,6 @@ impl common::MonoDaySolver for Solver {
             };
         }
 
-        (DayResult::new(sum), DayResult::new(screen))
+        (DayResult::new(sum), DayResult::new(screen.trim()))
     }
 }

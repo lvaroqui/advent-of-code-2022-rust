@@ -12,11 +12,66 @@ use common::{DaySolver, DualDaySolver, MonoDaySolver};
 use reqwest::blocking::Client;
 
 fn main() -> anyhow::Result<()> {
-    let day: u8 = std::env::args()
+    let arg = std::env::args()
         .nth(1)
-        .with_context(|| "Please provide a day number")?
-        .parse()?;
+        .with_context(|| "Please provide a day number / all")?;
 
+    let days = match arg.as_ref() {
+        "all" => 1..25,
+        day => {
+            let day = day.parse()?;
+            day..day + 1
+        }
+    };
+
+    let mut results = Vec::with_capacity(days.len());
+    for day in days {
+        results.push((day, solve_day(day)?));
+    }
+
+    let mut table = Table::new();
+    table
+        .load_preset(UTF8_FULL)
+        .apply_modifier(UTF8_ROUND_CORNERS)
+        .set_header(vec!["Day", "First Part", "Second Part", "Perf"])
+        .add_rows(
+            results
+                .into_iter()
+                .map(|(day, (first, first_stats, second, second_stats))| {
+                    vec![
+                        day.to_string(),
+                        first.to_string(),
+                        second.to_string(),
+                        if let Some(second_stats) = second_stats {
+                            format!(
+                                "{:?} ({:?} + {:?})",
+                                first_stats + second_stats,
+                                first_stats,
+                                second_stats
+                            )
+                        } else {
+                            format!("{:?}", first_stats)
+                        },
+                    ]
+                }),
+        );
+
+    println!("{table}");
+
+    Ok(())
+}
+
+fn solve_day(
+    day: u8,
+) -> Result<
+    (
+        common::DayResult,
+        Duration,
+        common::DayResult,
+        Option<Duration>,
+    ),
+    anyhow::Error,
+> {
     let solver: DaySolver = match day {
         1 => day01::Solver.to_day_solver(),
         2 => day02::Solver.to_day_solver(),
@@ -44,7 +99,6 @@ fn main() -> anyhow::Result<()> {
         24 => day24::Solver.to_day_solver(),
         _ => anyhow::bail!("Day {} not implemented!", day),
     };
-
     let mut path = PathBuf::from_str("inputs")?;
     std::fs::create_dir_all(&path)?;
     path.push(day.to_string());
@@ -65,10 +119,8 @@ fn main() -> anyhow::Result<()> {
             f.write_all(&buf[0..w])?;
         }
     }
-
     let input = std::fs::read_to_string(path)?;
     let input = input.trim_end();
-
     let (first, first_stats, second, second_stats) = match solver {
         DaySolver::Mono(s) => {
             let ((first, second), stats) = instrument(|| s.solve(input));
@@ -80,45 +132,13 @@ fn main() -> anyhow::Result<()> {
             (first, first_stats, second, Some(second_stats))
         }
     };
-
-    let mut table = Table::new();
-    table
-        .load_preset(UTF8_FULL)
-        .apply_modifier(UTF8_ROUND_CORNERS)
-        .set_header(vec!["Day", "First Part", "Second Part"])
-        .add_row(vec![
-            day.to_string(),
-            format!("{} ({})", first, first_stats),
-            format!(
-                "{} ({})",
-                second,
-                if let Some(second_stats) = second_stats {
-                    second_stats.to_string()
-                } else {
-                    "Calculated during first".to_string()
-                }
-            ),
-        ]);
-
-    println!("{table}");
-
-    Ok(())
+    Ok((first, first_stats, second, second_stats))
 }
 
-struct Stats {
-    duration: Duration,
-}
-
-fn instrument<T>(f: impl FnOnce() -> T) -> (T, Stats) {
+fn instrument<T>(f: impl FnOnce() -> T) -> (T, Duration) {
     let n = Instant::now();
     let res = f();
     let duration = n.elapsed();
 
-    (res, Stats { duration })
-}
-
-impl Display for Stats {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{:?}", self.duration)
-    }
+    (res, duration)
 }
