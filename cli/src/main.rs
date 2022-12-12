@@ -1,5 +1,4 @@
 use std::{
-    fmt::Display,
     io::{Read, Write},
     path::PathBuf,
     str::FromStr,
