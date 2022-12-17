@@ -38,6 +38,65 @@ impl common::DualDaySolver for Solver {
 
         DayResult::new(sum)
     }
+
+    // The distress signal can only come from a place where two pair of diagonals
+    // intersect like so:
+    // #.#...#.#.
+    // .#.#.#.#..
+    // ..#.#.#...
+    // ...#O#....
+    // ..#.#.#...
+    // .#.#.#.#..
+    // #.#...#.#.
+    // #: Line
+    // .: Impossible space because part of a sensor "square"
+    // O: Distress signal
+    fn solve_2(&self, input: &str) -> DayResult {
+        let sensors: Vec<_> = parse(input);
+
+        // Find increasing and decreasing parallel lines that have y-intercepts
+        // difference of 2
+        let mut ord_increasing = vec![];
+        let mut ord_decreasing = vec![];
+        for s in &sensors {
+            ord_increasing.push(s.pos.1 - (s.pos.0 + s.range));
+            ord_increasing.push(s.pos.1 - (s.pos.0 - s.range));
+            ord_decreasing.push(s.pos.1 + (s.pos.0 + s.range));
+            ord_decreasing.push(s.pos.1 + (s.pos.0 - s.range));
+        }
+
+        let mut ord_possible_increasing = vec![];
+        for (a, b) in ord_increasing.iter().sorted().tuples() {
+            if b - a == 2 {
+                ord_possible_increasing.push(b - 1);
+            }
+        }
+        let mut ord_possible_decreasing = vec![];
+        for (a, b) in ord_decreasing.iter().sorted().tuples() {
+            if b - a == 2 {
+                ord_possible_decreasing.push(b - 1);
+            }
+        }
+
+        // Check intersection for valid distress signal location
+        let bounds = 0..=4000000;
+        for inc in &ord_possible_increasing {
+            for dec in &ord_possible_decreasing {
+                let x_inter = (dec - inc) / 2;
+                let y_inter = x_inter + inc;
+                if bounds.contains(&x_inter)
+                    && bounds.contains(&y_inter)
+                    && sensors
+                        .iter()
+                        .all(|s| manathan_dist((x_inter, y_inter), s.pos) > s.range)
+                {
+                    return DayResult::new(x_inter as i64 * 4_000_000 + y_inter as i64);
+                }
+            }
+        }
+
+        DayResult::default()
+    }
 }
 
 fn parse(input: &str) -> Vec<Sensor> {
